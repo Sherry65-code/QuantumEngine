@@ -85,8 +85,11 @@ Engine::ShaderProgram Engine::CompileShaders(Engine::Shader shaders) {
     char infoLog[512];
     bool returnStatement = true;
 
-    const char* vertexShaderSource = shaders.VertexShader.c_str();
-    const char* fragmentShaderSource = shaders.FragmentShader.c_str();
+    std::string vertexShaderString = (Engine::read_from_file(shaders.VertexShader));
+    std::string fragmentShaderString = (Engine::read_from_file(shaders.FragmentShader));
+
+    const char* vertexShaderSource = vertexShaderString.c_str();
+    const char* fragmentShaderSource = fragmentShaderString.c_str();
 
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -97,7 +100,7 @@ Engine::ShaderProgram Engine::CompileShaders(Engine::Shader shaders) {
 
     if (!success) {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl; 
         returnStatement = false;
     }
 
@@ -222,4 +225,19 @@ void Engine::render() {
     glBindVertexArray(Engine::graphics.VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+std::string Engine::read_from_file(const std::string& filename) {
+    
+    std::ifstream file(filename);
+    
+    // Check for file existence
+    if (!file.is_open()) {
+        std::cerr << "Error reading file " << filename << "!" << std::endl;
+        return "";
+    }
+    
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
 }

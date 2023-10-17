@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -28,6 +31,7 @@ class Engine {
     void processInput();
     void render();
     void before_render();
+    std::string read_from_file(const std::string& filename);
 
     public:
     typedef struct Shader {
