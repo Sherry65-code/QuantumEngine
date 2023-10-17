@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 3.07.0)
 
 set(PROJECT_NAME QuantumEngine)
 

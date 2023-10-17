@@ -69,9 +69,6 @@ void Engine::Loop() {
     
     }
 
-    // Terminate Window which will properly clear all the resources
-    glfwTerminate();
-
 }
 
 void Engine::GetWindowDebugInfo() {
@@ -145,12 +142,18 @@ void Engine::UseProgram(Engine::ShaderProgram shader_program) {
 }
 
 void Engine::DeleteProgram(Engine::ShaderProgram shader_program) {
-    glDeleteProgram(shader_program.fragmentShader);
-    glDeleteProgram(shader_program.vertexShader);
+    glDeleteShader(shader_program.fragmentShader);
+    glDeleteShader(shader_program.vertexShader);
+    glDeleteProgram(shader_program.program);
 }
 
 void Engine::SetDisplayModeToWireframe(bool setToWireframe) {
     if (setToWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void Engine::Exit() {
+    // Terminate Window which will properly clear all the resources
+    glfwTerminate();
 }
 
 // 

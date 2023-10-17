@@ -48,4 +48,5 @@ class Engine {
     void Loop();
     void GetWindowDebugInfo();
     void SetDisplayModeToWireframe(bool setToWireframe);
+    void Exit();
 };

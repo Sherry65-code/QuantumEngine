@@ -29,4 +29,5 @@ int main() {
     engine.SetDisplayModeToWireframe(true);
     engine.Loop();
     engine.DeleteProgram(shaderprogram1);
+    engine.Exit();
 }
