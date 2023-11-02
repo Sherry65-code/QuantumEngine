@@ -127,6 +127,7 @@ Engine::ShaderProgram Engine::CompileShaders(Engine::Shader shaders) {
     if (!success) {
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::LINKING_FAILED!\n" << infoLog << std::endl;
+        returnStatement = false;
     }
 
     glDeleteShader(vertexShader);
@@ -136,6 +137,7 @@ Engine::ShaderProgram Engine::CompileShaders(Engine::Shader shaders) {
     shader_program.program = shaderProgram;
     shader_program.vertexShader = vertexShader;
     shader_program.fragmentShader = fragmentShader;
+    shader_program.Passed = returnStatement;
 
     return shader_program;
 }

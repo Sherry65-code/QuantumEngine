@@ -42,6 +42,7 @@ class Engine {
         uint32_t program;
         uint32_t vertexShader;
         uint32_t fragmentShader;
+        bool Passed;
     } ShaderProgram;
 
     Engine::ShaderProgram CompileShaders(Engine::Shader shaders);
