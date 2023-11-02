@@ -22,6 +22,6 @@ set(COMPILE_FLAGS "${COMPILE_FLAGS} -static")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-add_executable(QuantumEngineTest ${CMAKE_SOURCE_DIR}/src/Binary.cpp ${CMAKE_SOURCE_DIR}/src/Engine.cpp ${CMAKE_SOURCE_DIR}/src/external/glad.c)
+add_executable(QuantumEngine ${CMAKE_SOURCE_DIR}/src/Binary.cpp ${CMAKE_SOURCE_DIR}/src/Engine.cpp ${CMAKE_SOURCE_DIR}/src/external/glad.c)
 
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
