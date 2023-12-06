@@ -1,8 +1,74 @@
 #include "Engine.hpp"
 #include <vector>
 #include <time.h>
+#include <string>
+
+bool static is_integer(std::string str) {
+    try {
+        std::stoi(str);
+        return true;
+    }
+    catch (std::invalid_argument const& e) {
+        return false;
+    }
+}
 
 int main(int argc, char* argv[]) {
+
+    // Convert arguments from Pointer Array to std::string
+    std::vector<std::string> args(argv, argv + argc);
+    std::string current;
+
+    // Some Variables for window declaration
+    bool is_fullscreen = false;
+    bool is_debug = false;
+    int win_h = 600;
+    int win_w = 800;
+    std::string win_nm = "Quantum Engine Demo";
+
+    for (int i = 1; i < argc; i++) {
+        current = args.at(i);
+        
+        if (current == "-debug") {
+            is_debug = true;
+        }
+        else if (current == "-nodebug") {
+            is_debug = false;
+        }
+        else if (current == "-windowed" || current == "-nofullscreen") {
+            is_fullscreen = false;
+        }
+        else if (current == "-fullscreen" || current == "-nowindow") {
+            is_fullscreen = true;
+        }
+        else if (current == "-w") {
+            if (is_integer(args.at(i + 1)))
+                win_w = std::stoi(args.at(i + 1));
+            else {
+                std::cout << args.at(i + 1) << " is not a integer." << std::endl;
+            }
+            i += 1;
+        }
+        else if (current == "-h") {
+            if (is_integer(args.at(i + 1))) {
+                win_h = std::stoi(args.at(i + 1));
+            }
+            else {
+                std::cout << args.at(i + 1) << " is not a integer." << std::endl;
+            }
+            i += 1;
+        }
+        else if (current == "-help") {
+            std::cout << "ARGUMENTS:\n-debug: to enable debugging messages\n-nodebug: to disable debugging messages (default)\n-windowed\\-nofullscreen: to open in windowed mode (default)\n-fullscreen\\-nowindow: to open in fullscreen mode\n-w <INTEGER>: to set window width\n-h <INTEGER>: to set window height\n";
+            exit(-1);
+        }
+        else {
+            std::cout << "ERROR: \"" << current << "\" is not a argument!" << std::endl;
+            exit(-1);
+        }
+
+
+    }
 
     // Intialize
     Engine engine;
@@ -24,8 +90,14 @@ int main(int argc, char* argv[]) {
     // Make a Vector in order to manage all the shader programs
     std::vector<Engine::ShaderProgram> shaderPrograms;
     
+
     // Basic Window Setup and Parameters setup
-    engine.SetWindowParameters("Quantum Engine", 800, 600);
+    if (is_fullscreen) {
+        engine.SetWindowParameters(win_nm, 0, 0);
+    }
+    else {
+        engine.SetWindowParameters(win_nm, win_w, win_h);
+    }
 
     // Open Window
     engine.NewWindow();

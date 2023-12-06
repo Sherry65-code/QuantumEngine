@@ -1,5 +1,6 @@
 #include "Engine.hpp"
 
+bool is_fullscreen = false;
 
 void Engine::SetWindowParameters(std::string window_name, int window_width, int window_height) {
     _window.name = window_name;
@@ -8,7 +9,7 @@ void Engine::SetWindowParameters(std::string window_name, int window_width, int 
 }
 
 void Engine::NewWindow() {
-    
+
     // Initialize GLFW
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -16,7 +17,20 @@ void Engine::NewWindow() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     // Create Window
-    _window.window = glfwCreateWindow(_window.width, _window.height, _window.name.c_str(), NULL, NULL);
+    if (_window.height == 0 || _window.width == 0) {
+        // Get monitor and monitor res
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+        // set window
+        _window.window = glfwCreateWindow(mode->width, mode->height, _window.name.c_str(), glfwGetPrimaryMonitor(), 0);
+        
+        _window.width = mode->width;
+        _window.height = mode->height;
+    }
+    else {
+        _window.window = glfwCreateWindow(_window.width, _window.height, _window.name.c_str(), 0, 0);
+    }
 
     // Check if Window is created
     if (_window.window == NULL) {
@@ -189,10 +203,10 @@ void Engine::before_render() {
 
     // Define the vertices and indices
     float vertices[] = {
-        0.5f, 0.5f, 0.0f,       // top right
-        0.5f, -0.5f, 0.0f,      // bottom right
-        -0.5f, -0.5f, 0.0f,     // bottom left
-        -0.5f, 0.5f, 0.0f       // top left
+        1.0f, 1.0f, 0.0f,       // top right
+        1.0f, -1.0f, 0.0f,      // bottom right
+        -1.0f, -1.0f, 0.0f,     // bottom left
+        -1.0f, 1.0f, 0.0f       // top left
     };
     unsigned int indices[] = {
          3, 2, 1,       // first triangle

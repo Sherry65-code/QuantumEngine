@@ -11,12 +11,12 @@
 class Engine {
 
     private:
-    typedef struct Window {
-        GLFWwindow* window;
-        std::string name;
-        int width;
-        int height;
-    } Window;
+        typedef struct Window {
+            GLFWwindow* window;
+            std::string name;
+            int width;
+            int height;
+        } Window;
     typedef uint32_t DefaultShaderProgram;
     typedef struct Graphics {
         uint32_t VAO;
@@ -26,6 +26,7 @@ class Engine {
     Engine::Window _window;
     Engine::DefaultShaderProgram default_shader_program;
     Engine::Graphics graphics;
+
 
     static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
     void processInput();
