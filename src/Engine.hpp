@@ -22,6 +22,7 @@ class Engine {
         uint32_t VAO;
         uint32_t VBO;
         uint32_t EBO;
+        uint32_t texture;
     } Graphics;
     Engine::Window _window;
     Engine::DefaultShaderProgram default_shader_program;
@@ -55,4 +56,5 @@ class Engine {
     void GetWindowDebugInfo();
     void SetDisplayModeToWireframe(bool setToWireframe);
     void Exit();
+    uint32_t LoadTexture(const std::string& filePath);
 };
