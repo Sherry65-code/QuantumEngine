@@ -160,6 +160,39 @@ Engine::ShaderProgram Engine::CompileShaders(Engine::Shader shaders) {
     return shader_program;
 }
 
+
+uint32_t Engine::LoadTexture(const std::string& filePath) {
+
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // Set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // Set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Load image, create texture, and generate mipmaps
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
+
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else {
+        std::cerr << "Failed to load texture from file: " << filePath << std::endl;
+    }
+
+    stbi_image_free(data);
+
+    return texture;
+}
+
+
 void Engine::UseProgram(Engine::ShaderProgram shader_program) {
     Engine::default_shader_program = shader_program.program;
 }
@@ -257,37 +290,6 @@ void Engine::render() {
     glUseProgram(Engine::default_shader_program);
     glBindVertexArray(Engine::graphics.VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
-
-uint32_t Engine::LoadTexture(const std::string& filePath) {
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    // Set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    // Set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Load image, create texture, and generate mipmaps
-    int width, height, nrChannels;
-    unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
-
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else {
-        std::cerr << "Failed to load texture from file: " << filePath << std::endl;
-    }
-
-    stbi_image_free(data);
-
-    return texture;
 }
 
 std::string Engine::read_from_file(const std::string& filename) {
